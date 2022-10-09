@@ -1,21 +1,33 @@
 <script setup>
-import {defineComponent, ref} from 'vue'
+import {computed, defineComponent, ref} from 'vue'
 import {useTickerList} from "../store/useTickerList.js";
 import {useSockets} from "../store/useSockets.js";
+import {useChart} from "../store/useСhart.js";
+import {storeToRefs} from "pinia";
 
 defineComponent({
   name: "TickerGridItem"
 })
-const props = defineProps({
+const {ticker} = defineProps({
   ticker: String,
 })
 const {removeTicker} = useTickerList()
 const {tickerPriceList} = useSockets()
+const chartStore = useChart()
+const { selectTicker} = chartStore
+const {selectedTicker} = storeToRefs(chartStore)
 
+const activeClasses = computed(() => {
+  if (selectedTicker.value === ticker) {
+    return ['border-[3px]', 'border-gray-900']
+  }
+  return ''
+})
 </script>
 
 <template>
-  <div class="ticker__item py-[16px] px-[20px] bg-white text-gray-900 rounded-md border border-gray-300">
+  <div class="ticker__item py-[16px] px-[20px] bg-white text-gray-900 rounded-md border border-gray-300"
+       :class="activeClasses" @click="selectTicker(ticker)">
     <div class="flex justify-between">
       <div class="ticker-name text-sm">
         {{ ticker }}
