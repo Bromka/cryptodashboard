@@ -4,6 +4,7 @@ import AppTickersSelect from "./components/AppTickersSelect.vue";
 import AppTickersPagination from "./components/AppTickersPagination.vue";
 import {onMounted, onUnmounted} from "vue";
 import {useSockets} from "./store/useSockets.js";
+import AppChart from "./components/AppChart.vue";
 
 
 const socketStore = useSockets()
@@ -23,6 +24,7 @@ onUnmounted(() => {
   <div class="p-6 bg-gray-50 h-screen">
     <AppHeader/>
     <AppTickersSelect/>
+    <AppChart />
     <AppTickersPagination/>
   </div>
 </template>
