@@ -1,11 +1,15 @@
 <script setup>
 import {defineComponent, ref} from 'vue'
 import TickerGridItem from "./TickerGridItem.vue";
+import {useTickerList} from "../store/useTickerList.js";
+import {storeToRefs} from "pinia";
 
 defineComponent({
   name: "AppTickersSelect"
 })
 defineProps({})
+const tickerStore = useTickerList();
+const {currentPageTickers} = storeToRefs(tickerStore)
 
 </script>
 
@@ -16,7 +20,7 @@ defineProps({})
              class="pl-[41px] py-[9px] rounded-md border border-gray-300 text-gray-500" placeholder="Найти тикер">
     </div>
     <div class="tickers__grid  mt-[18px]">
-      <TickerGridItem v-for="elem in 6"></TickerGridItem>
+      <TickerGridItem v-for="elem in currentPageTickers" :ticker="elem" :key="elem"></TickerGridItem>
     </div>
   </div>
 </template>
@@ -28,7 +32,7 @@ defineProps({})
 }
 .tickers__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(470px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   column-gap: 12px;
   row-gap: 16px;
 }

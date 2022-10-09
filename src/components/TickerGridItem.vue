@@ -1,10 +1,14 @@
 <script setup>
 import {defineComponent, ref} from 'vue'
+import {useTickerList} from "../store/useTickerList.js";
 
 defineComponent({
   name: "TickerGridItem"
 })
-defineProps({})
+const props = defineProps({
+  ticker: String,
+})
+const {removeTicker} = useTickerList()
 
 </script>
 
@@ -12,9 +16,9 @@ defineProps({})
   <div class="ticker__item py-[16px] px-[20px] bg-white text-gray-900 rounded-md border border-gray-300">
     <div class="flex justify-between">
       <div class="ticker-name text-sm">
-        ETH
+        {{ ticker }}
       </div>
-      <button class="self-end"><img src="src/assets/trash.svg"></button>
+      <button class="self-end" @click="removeTicker(ticker)"><img src="src/assets/trash.svg"></button>
     </div>
     <div class="ticker-value text-3xl">1095.45$</div>
   </div>
