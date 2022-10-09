@@ -7,21 +7,18 @@ export const usePaginationStore = defineStore('pagination', () => {
     const filter = ref('')
 
     const tickerStore = useTickerList()
-    const {tickerList, filteredTickers} = storeToRefs(tickerStore)
+    const {tickerList } = storeToRefs(tickerStore)
+    const {filteredTickers} = tickerStore;
 
     const disabledNext = computed(() => {
-        console.log('tickerList', tickerList)
-        console.log(filteredTickers, 'filteredTickers')
-       return filteredTickers.length <= page.value * 6;
+       return tickerStore.filteredTickers.length <= (page.value+1) * 6;
     })
     const disabledPrev = computed(() => {
         return page.value === 0;
     })
 
     const currentLength = computed(() => {
-        console.log('filteredTickers')
-        console.log(filteredTickers)
-        return filteredTickers;
+        return tickerStore.filteredTickers.length < 6 ? tickerStore.filteredTickers.length : 6;
     })
 
     function pageNext() {
