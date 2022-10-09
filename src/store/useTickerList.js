@@ -34,7 +34,7 @@ export const useTickerList = defineStore('tickerList', () => {
     const filteredTickers = computed(() => {
         const filtered = tickerList.value.filter(ticker => {
             if (filter.value.trim().toLowerCase()) {
-                !ticker.toLowerCase().includes(filter.value)
+                return ticker.toLowerCase().includes(filter.value)
             } else {
                 return ticker
             }

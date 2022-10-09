@@ -3,13 +3,18 @@ import {defineComponent, ref} from 'vue'
 import TickerGridItem from "./TickerGridItem.vue";
 import {useTickerList} from "../store/useTickerList.js";
 import {storeToRefs} from "pinia";
+import {usePaginationStore} from "../store/usePagination.js";
 
 defineComponent({
   name: "AppTickersSelect"
 })
 defineProps({})
 const tickerStore = useTickerList();
+
 const {currentPageTickers} = storeToRefs(tickerStore)
+
+const pageStore = usePaginationStore()
+const { filter } = storeToRefs(pageStore)
 
 </script>
 
@@ -17,7 +22,7 @@ const {currentPageTickers} = storeToRefs(tickerStore)
   <div class="mt-[16px]">
     <div class="search">
       <input type="text"
-             class="pl-[41px] py-[9px] rounded-md border border-gray-300 text-gray-500" placeholder="Найти тикер">
+             class="pl-[41px] py-[9px] rounded-md border border-gray-300 text-gray-500" placeholder="Найти тикер" v-model="filter">
     </div>
     <div class="tickers__grid  mt-[18px]">
       <TickerGridItem v-for="elem in currentPageTickers" :ticker="elem" :key="elem"></TickerGridItem>
