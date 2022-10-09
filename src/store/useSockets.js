@@ -1,6 +1,6 @@
 import {defineStore, storeToRefs} from 'pinia'
 import {useTickerList} from "./useTickerList.js";
-import {computed, ref} from "vue";
+import {computed, reactive, ref} from "vue";
 import global from "../global.js";
 
 export const useSockets = defineStore('cryptocompare', () => {
@@ -9,7 +9,9 @@ export const useSockets = defineStore('cryptocompare', () => {
     let socket = new WebSocket(URL);
 
     const tickerStore = useTickerList()
-    const { tickerList } = storeToRefs(tickerStore)
+    const {tickerList} = storeToRefs(tickerStore)
+
+    const tickerPriceList = ref({})
 
     const subsGoals = computed(() => {
         return tickerList.value.map(el => `0~Coinbase~${el}~USD`)
@@ -17,15 +19,24 @@ export const useSockets = defineStore('cryptocompare', () => {
     tickerStore.$subscribe((mutation, state) => {
         if (mutation.storeId === 'tickerList') {
             localStorage.setItem(global.STORAGE_KEY, JSON.stringify(state.tickerList))
-            close()
-            setTimeout(() => {
-                open()
-                socket.send()
-            }, 6000)
+
+            const unSub = {
+                "action": "SubRemove",
+                "subs": subsGoals.value
+            }
+            socket.send(JSON.stringify(unSub))
+
+            const sub = {
+                "action": "SubAdd",
+                "subs": subsGoals.value
+            }
+            socket.send(JSON.stringify(sub))
+
 
         }
 
     })
+
     function open() {
         socket.onopen = (e) => {
             const subscribe = {
@@ -33,7 +44,7 @@ export const useSockets = defineStore('cryptocompare', () => {
                 "subs": subsGoals.value
             }
             socket.send(JSON.stringify(subscribe))
-            console.log(e, 'asssssssssssssssda')
+
         }
         socket.onclose = function (event) {
             if (event.wasClean) {
@@ -44,7 +55,12 @@ export const useSockets = defineStore('cryptocompare', () => {
         };
 
         socket.onmessage = function (event) {
-            console.log(`[message] Данные получены с сервера: ${event.data}`);
+
+            const {FSYM, P} = JSON.parse(event.data)
+            if (FSYM && P) {
+                tickerPriceList.value[FSYM] = P;
+            }
+
         };
 
         socket.onerror = function (error) {
@@ -57,5 +73,5 @@ export const useSockets = defineStore('cryptocompare', () => {
         socket.close()
     }
 
-    return {close, open}
+    return {close, open, tickerPriceList}
 })
