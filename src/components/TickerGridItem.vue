@@ -1,6 +1,7 @@
 <script setup>
 import {defineComponent, ref} from 'vue'
 import {useTickerList} from "../store/useTickerList.js";
+import {useSockets} from "../store/useSockets.js";
 
 defineComponent({
   name: "TickerGridItem"
@@ -9,6 +10,7 @@ const props = defineProps({
   ticker: String,
 })
 const {removeTicker} = useTickerList()
+const {tickerPriceList} = useSockets()
 
 </script>
 
@@ -20,7 +22,7 @@ const {removeTicker} = useTickerList()
       </div>
       <button class="self-end" @click="removeTicker(ticker)"><img src="src/assets/trash.svg"></button>
     </div>
-    <div class="ticker-value text-3xl">1095.45$</div>
+    <div class="ticker-value text-3xl">{{ tickerPriceList[ticker] }}$</div>
   </div>
 </template>
 
