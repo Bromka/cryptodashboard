@@ -3,9 +3,8 @@ import {computed, ref} from "vue";
 import global from "../global.js";
 import {usePaginationStore} from "./usePagination.js";
 
-const TICKER_LIST_KEY = 'ticker_list'
 export const useTickerList = defineStore('tickerList', () => {
-    const tickerList = ref(JSON.parse(localStorage.getItem(TICKER_LIST_KEY)) ?? ['USD', 'USD', 'USD', 'USD', 'USD', 'USD', 'USD', 'USD'])
+    const tickerList = ref(JSON.parse(localStorage.getItem(global.STORAGE_KEY)) ?? ['BTC'])
 
 
     const pageStore = usePaginationStore()
@@ -42,10 +41,6 @@ export const useTickerList = defineStore('tickerList', () => {
             }
         })
 
-        console.log('tickerList value = ', tickerList.value)
-        console.log('filter', filter)
-        console.log('filteredTickers = ', filteredTickers.value)
-        console.log(filtered)
         return filtered
     })
 
