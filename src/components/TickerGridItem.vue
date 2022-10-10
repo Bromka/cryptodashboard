@@ -14,7 +14,7 @@ const {ticker} = defineProps({
 const {removeTicker} = useTickerList()
 const {tickerPriceList} = useSockets()
 const chartStore = useChart()
-const { selectTicker} = chartStore
+const {selectTicker} = chartStore
 const {selectedTicker} = storeToRefs(chartStore)
 
 const activeClasses = computed(() => {
@@ -23,6 +23,14 @@ const activeClasses = computed(() => {
   }
   return ''
 })
+
+function removeHandler() {
+  removeTicker(ticker)
+  if (selectedTicker.value === ticker) {
+    selectedTicker.value = '';
+  }
+
+}
 </script>
 
 <template>
@@ -32,7 +40,7 @@ const activeClasses = computed(() => {
       <div class="ticker-name text-sm">
         {{ ticker }}
       </div>
-      <button class="self-end" @click="removeTicker(ticker)"><img src="src/assets/trash.svg"></button>
+      <button class="self-end" @click="removeHandler"><img src="src/assets/trash.svg"></button>
     </div>
     <div class="ticker-value text-3xl">{{ tickerPriceList[ticker] }}$</div>
   </div>

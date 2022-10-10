@@ -1,12 +1,16 @@
 import {defineStore, storeToRefs} from 'pinia'
 import {useTickerList} from "./useTickerList.js";
-import {computed, reactive, ref} from "vue";
+import {computed, reactive, ref, watch} from "vue";
 import global from "../global.js";
+import {useChart} from "./useСhart.js";
 
 export const useSockets = defineStore('cryptocompare', () => {
 
     const URL = "wss://streamer.cryptocompare.com/v2?api_key=fdb9579108906a3c0023a8ce3c4fd0feb6186309a813aef77e02962dac9c99e9"
     let socket = new WebSocket(URL);
+
+    const chartStore = useChart()
+    const {selectedTicker, selectedTickerChartData} = storeToRefs(chartStore)
 
     const tickerStore = useTickerList()
     const {tickerList} = storeToRefs(tickerStore)
@@ -19,22 +23,21 @@ export const useSockets = defineStore('cryptocompare', () => {
     tickerStore.$subscribe((mutation, state) => {
         if (mutation.storeId === 'tickerList') {
             localStorage.setItem(global.STORAGE_KEY, JSON.stringify(state.tickerList))
-
             const unSub = {
                 "action": "SubRemove",
                 "subs": subsGoals.value
             }
             socket.send(JSON.stringify(unSub))
-
             const sub = {
                 "action": "SubAdd",
                 "subs": subsGoals.value
             }
             socket.send(JSON.stringify(sub))
-
-
         }
 
+    })
+
+    chartStore.$subscribe((mutation, state) => {
     })
 
     function open() {
@@ -59,7 +62,12 @@ export const useSockets = defineStore('cryptocompare', () => {
             const {FSYM, P} = JSON.parse(event.data)
             if (FSYM && P) {
                 tickerPriceList.value[FSYM] = P;
+
+                if (selectedTicker.value === FSYM) {
+                    selectedTickerChartData.value.push(P)
+                }
             }
+
 
         };
 

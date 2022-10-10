@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "pinia": "^2.0.23",
-    "vue": "^3.2.37"
+    "vue": "^3.2.37",
+    "vue-bar-graph": "^2.0.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.3",

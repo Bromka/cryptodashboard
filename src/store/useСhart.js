@@ -1,5 +1,7 @@
-import {defineStore} from 'pinia'
-import {ref} from "vue";
+import {defineStore, storeToRefs} from 'pinia'
+import {computed, ref} from "vue";
+import {useTickerList} from "./useTickerList.js";
+import global from "../global.js";
 
 export const useChart = defineStore('tickerChart', () => {
     const selectedTicker = ref('')
@@ -16,5 +18,9 @@ export const useChart = defineStore('tickerChart', () => {
         selectedTickerChartData.value = []
     }
 
-    return {selectedTicker, selectTicker}
+    const getSelectedTickerChartData = computed(() => {
+        return selectedTickerChartData.value.slice(-20) || []
+    })
+
+    return {selectedTicker, selectTicker, selectedTickerChartData, getSelectedTickerChartData}
 })
