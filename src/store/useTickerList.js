@@ -4,7 +4,7 @@ import global from "../global.js";
 import {usePaginationStore} from "./usePagination.js";
 
 export const useTickerList = defineStore('tickerList', () => {
-    const tickerList = ref(JSON.parse(localStorage.getItem(global.STORAGE_KEY)) ?? ['BTC'])
+    const tickerList = ref(JSON.parse(localStorage.getItem(global.STORAGE_KEY)) ?? [])
 
     const pageStore = usePaginationStore()
     const {page, filter} = storeToRefs(pageStore)
