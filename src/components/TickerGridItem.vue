@@ -27,7 +27,6 @@ const activeClasses = computed(() => {
 function removeHandler() {
   removeTicker(ticker)
   if (selectedTicker.value === ticker) {
-    console.log('')
     selectedTicker.value = ''
   }
 }

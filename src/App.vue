@@ -21,7 +21,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="p-6 bg-gray-50 h-screen">
+  <div class="p-6 bg-gray-50 h-screen flex flex-col">
     <AppHeader/>
     <AppTickersSelect/>
     <AppChart />

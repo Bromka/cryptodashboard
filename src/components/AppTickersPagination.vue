@@ -21,7 +21,7 @@ const {pageNext, pagePrev} = paginationStore;
 </script>
 
 <template>
-  <div class="ticker-pagination py-[12px] flex justify-between items-center border-t border-gray-200 mt-6">
+  <div class="ticker-pagination py-[12px] flex justify-between items-center sm:border-t border-gray-200 mt-6 border-none">
     <span class="text-gray-700 text-sm">Показано {{
         currentPageTickers.length
       }} результатов из {{ tickerStore.tickerList.length }}</span>

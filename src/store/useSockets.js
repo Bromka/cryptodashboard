@@ -70,11 +70,6 @@ export const useSockets = defineStore('cryptocompare', () => {
 
 
         };
-
-        socket.onerror = function (error) {
-            console.log(`[error] ${error}`);
-            console.log(error);
-        };
     }
 
     function close() {
