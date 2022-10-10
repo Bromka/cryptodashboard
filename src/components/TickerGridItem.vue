@@ -27,9 +27,9 @@ const activeClasses = computed(() => {
 function removeHandler() {
   removeTicker(ticker)
   if (selectedTicker.value === ticker) {
-    selectedTicker.value = '';
+    console.log('')
+    selectedTicker.value = ''
   }
-
 }
 </script>
 
@@ -40,7 +40,7 @@ function removeHandler() {
       <div class="ticker-name text-sm">
         {{ ticker }}
       </div>
-      <button class="self-end" @click="removeHandler"><img src="src/assets/trash.svg"></button>
+      <button class="self-end" @click.stop="removeHandler"><img src="src/assets/trash.svg"></button>
     </div>
     <div class="ticker-value text-3xl">{{ tickerPriceList[ticker] }}$</div>
   </div>

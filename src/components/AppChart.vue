@@ -7,20 +7,27 @@ import {storeToRefs} from "pinia";
 defineComponent({
   name: "AppChart"
 })
-defineProps({})
 
 const chartStore = useChart()
+
 const {selectedTicker, getSelectedTickerChartData} = storeToRefs(chartStore);
 
+
 const getChartData = computed(() => {
-      return (getSelectedTickerChartData.value || [{value: 0, barColor: '#FCD34D'}]).map((el) => ({value: el, barColor: '#FCD34D'})) || []
+      if (!getSelectedTickerChartData.value.length) {
+        return [{value: 1, barColor: '#FCD34D'}]
+      }
+      return (getSelectedTickerChartData.value).map((el) => ({
+        value: el,
+        barColor: '#FCD34D'
+      })) || []
     }
 )
 </script>
 
 <template>
   <div class="chart__container bg-white p-[20px] my-[16px]" v-if="selectedTicker">
-    {{selectedTicker}}
+    {{ selectedTicker }}
     <vue-bar-graph
         :points="getChartData"
         :width="400"
